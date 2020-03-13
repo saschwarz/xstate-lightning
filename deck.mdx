@@ -1,0 +1,129 @@
+import { FullScreenCode, Head, Image, SplitRight, themes } from 'mdx-deck'
+export const theme = {
+  ...themes.dark,
+  styles: {
+    li: {
+      fontSize: '1.5em',
+    }
+  }
+}
+import trafficlight from './images/traffic-light.png'
+import DogPlay from './src/DogPlay'
+
+<Head>
+  <title>TIL: State Machines/Charts in XState</title>
+</Head>
+
+---
+
+# Today I Learned:
+# State Machines/Charts in XState
+##
+##
+## Steve Schwarz
+## [@steveaschwarz](https://twitter.com/steveaschwarz)
+
+---
+
+Software developer since 1991
+
+15 yrs C/C++: factory automation and futures/options trading
+
+12+ yrs web dev: Python, JavaScript, Angular, VueJS
+
+25+ yrs: dog agility and web dev: [agilitynerd.com](https://www.agilitynerd.com),  [tech.agilitynerd.com](https://tech.agilitynerd.com), [googility.com](https://googility.com), [agilitycourses.com](https://agilitycourses.com) & [agilitycoursemaster.com](https://agilitycoursemaster.com)
+
+---
+
+# A Finite State Machine:
+
+- Has a fixed number of States
+- Has an initial state - and only one active state
+- Reacts to Events based on its current state
+- Change/Transition to another state
+
+[Wikipedia: Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine)
+
+---
+
+# Classic Traffic Light FSM
+
+<Image src={trafficlight} size="contain" style={{width: '80vw', margin:'0'}}></Image>
+
+<a href="https://xstate.js.org/viz/?gist=12be236f588172dee0282e48ff02e0b3">Demo</a>
+
+---
+
+# A State Chart Extends FSM
+
+
+
+---
+
+# Why State Machines?
+
+- Encapsulation of State/Logic
+- Design/Test w/o code
+- Visualizable
+- Simulatable
+- Ignore or error on unexpected events in states
+
+---
+
+# My "A Ha!" FSM Experience
+
+Factory Automation control system
+
+Just-In-Time Printed Circuit Board (PCB) assembly equipment
+
+Read barcode on PCB, adjust conveyor width, download/select control program, alert user to replenish components, release PCB, start machine, etc.
+
+Single FSM with ~30 Events and ~20 States
+
+Entire design on paper in ~week and coded in days
+
+UNIX/C++ in 1995. Still in use!
+
+---
+
+# XState
+
+---
+
+# FSM Modeling
+## Training a dog to sit at the door before being going outside
+
+https://xstate.js.org/viz/?gist=318b7e82d70c1a4c12fd615d1007ecb9
+
+---
+
+# Add in a Door State
+
+<DogPlay/>
+
+https://xstate.js.org/viz/?gist=2ad7eeda381f43a4139c01df82d2a9ad
+
+---
+
+# Enhance Our Dog Model
+
+
+---
+
+# Multiple Dogs
+
+
+---
+
+Traffic Light
+https://xstate.js.org/viz/?gist=12be236f588172dee0282e48ff02e0b3
+
+DogLife Machine
+
+---
+
+# Resources
+
+- https://jonbellah.com/articles/xstate-react-hooks/
+
+

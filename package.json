@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "start": "mdx-deck deck.mdx",
+    "build": "mdx-deck build deck.mdx"
+  },
+  "devDependencies": {
+    "mdx-deck": "~4.0"
+  },
+  "dependencies": {
+    "@xstate/react": "^0.8.1",
+    "code-surfer": "^3.1.0",
+    "styled-components": "^5.0.1"
+  }
+}
