@@ -5,7 +5,6 @@ import dogLying from '../images/dog-lying-svgrepo-com.svg'
 import dogPlaying from '../images/dog-playing-svgrepo-com.svg'
 import dogSitting from '../images/dog-seating-svgrepo-com.svg'
 import dogStanding from '../images/dog-svgrepo-com.svg'
-// import doorClosed from '../images/door-open-svgrepo-com.svg'
 import doorClosed from '../images/closed-filled-rectangular-door-svgrepo-com.svg'
 import doorOpen from '../images/open-exit-door-svgrepo-com.svg'
 import styled from 'styled-components'
@@ -39,10 +38,12 @@ const Btn = styled.button`
 const Img = styled.img`
   max-height: 200px;
 `
+const Empty = styled.div`
+  width: 100px;
+`
 
-
-const dogPlay = Machine({
-  id: 'dogplay',
+const dogTraining = Machine({
+  id: 'dogTraining',
   initial: 'sleeping',
   context: {
     doorOpen: false,
@@ -98,15 +99,15 @@ const dogPlay = Machine({
   })
 
 const DogPlay = () => {
-  const [state, send] = useMachine(dogPlay)
+  const [state, send] = useMachine(dogTraining)
 
   return <>
     <Wrapper>
-      {state.matches('sleeping') ? <Img src={dogLying} alt="a sleeping dog" /> : <div style={{ width: "100px" }} />}
-      {state.matches('standing') ? <Img src={dogStanding} alt="a standing dog" /> : <div style={{ width: "100px" }} />}
+      {state.matches('sleeping') ? <Img src={dogLying} alt="a sleeping dog" /> : <Empty />}
+      {state.matches('standing') ? <Img src={dogStanding} alt="a standing dog" /> : <Empty />}
       {state.matches('sitting') ? <Img src={dogSitting} alt="a sitting dog" /> : null}
       {state.context.doorOpen ? <Img src={doorOpen} alt="an open door" /> : <Img src={doorClosed} alt="a closed door" />}
-      {state.matches('outside') ? <Img src={dogPlaying} alt="a dog playing" style={{ transform: 'scaleX(-1)' }} /> : <div style={{ width: "100px" }} />}
+      {state.matches('outside') ? <Img src={dogPlaying} alt="a dog playing" style={{ transform: 'scaleX(-1)' }} /> : <Empty />}
     </Wrapper>
     <Wrapper>
       <h3>Dog's Actions:</h3>
@@ -114,8 +115,8 @@ const DogPlay = () => {
         <Btn onClick={() => send('SIT')}>Sit</Btn>
         <Btn onClick={() => send('STAND')}>Stand</Btn>
       </Centered>
+      <h3>Trainer's Actions:</h3>
       <Centered>
-        <h3>Trainer's Actions:</h3>
         <Btn onClick={() => send('LETS_PLAY')}>"Let's Play"</Btn>
         <Btn onClick={() => send('FREE')}>"Free"</Btn>
         <Btn onClick={() => send('DOOR_OPEN')}>Door Open</Btn>

@@ -1,14 +1,32 @@
-import { FullScreenCode, Head, Image, SplitRight, themes } from 'mdx-deck'
+import { FullScreenCode, Head, Image, SplitRight, themes, Steps } from 'mdx-deck'
+import { CodeSurfer } from "code-surfer"
+import { vsDark } from "@code-surfer/themes"
+
 export const theme = {
   ...themes.dark,
   styles: {
+    ul: {
+      maxWidth: '80vw'
+    },
     li: {
       fontSize: '1.5em',
+      lineHeight: '1.5em',
+      marginBottom: '.6em',
+    },
+    p: {
+      fontSize: '1.3em',
+    },
+    a: {
+      fontSize: '.8em',
+      color: '#fff'
     }
   }
 }
+
 import trafficlight from './images/traffic-light.png'
-import DogPlay from './src/DogPlay'
+import dogLifeFSM from './images/dog-life-fsm.png'
+import DogLife from './src/DogLife'
+import DogTraining from './src/DogTraining'
 
 <Head>
   <title>TIL: State Machines/Charts in XState</title>
@@ -25,105 +43,399 @@ import DogPlay from './src/DogPlay'
 
 ---
 
+## Me
+
 Software developer since 1991
 
-15 yrs C/C++: factory automation and futures/options trading
+Factory automation and futures/options trading product development: C/C++
 
-12+ yrs web dev: Python, JavaScript, Angular, VueJS
+Full stack web product dev: Python, JavaScript, Angular, VueJS
 
-25+ yrs: dog agility and web dev: [agilitynerd.com](https://www.agilitynerd.com),  [tech.agilitynerd.com](https://tech.agilitynerd.com), [googility.com](https://googility.com), [agilitycourses.com](https://agilitycourses.com) & [agilitycoursemaster.com](https://agilitycoursemaster.com)
+Personal dog agility and tech projects:
 
----
-
-# A Finite State Machine:
-
-- Has a fixed number of States
-- Has an initial state - and only one active state
-- Reacts to Events based on its current state
-- Change/Transition to another state
-
-[Wikipedia: Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine)
+[agilitynerd.com](https://www.agilitynerd.com) [tech.agilitynerd.com](https://tech.agilitynerd.com) [googility.com](https://googility.com) [agilitycourses.com](https://agilitycourses.com) [agilitycoursemaster.com](https://agilitycoursemaster.com)
 
 ---
 
-# Classic Traffic Light FSM
+# Just an Overview!
+
+<Steps>
+
+- State machines/statecharts are extremely powerful for design/implementation
+- Uses in the front end and back end
+- Introduce State Machine concepts
+- Simple XState State Machine implementations
+- Use XState in simple React components
+
+</Steps>
+
+---
+
+# Classic Traffic Light Finite State Machine
 
 <Image src={trafficlight} size="contain" style={{width: '80vw', margin:'0'}}></Image>
 
 <a href="https://xstate.js.org/viz/?gist=12be236f588172dee0282e48ff02e0b3">Demo</a>
 
+
 ---
 
-# A State Chart Extends FSM
+# A Finite State Machine:
+
+[Wikipedia: Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine)
+
+<Steps>
+
+- A fixed number of States
+- An initial state - and only one active state
+- Reacts to Events based on its current state
+- Change/Transition to another state
+
+</Steps>
 
 
+---
+
+# Statecharts Extend FSM Functionality
+
+<Steps>
+
+  - Actions on entry/exit/transition
+  - Parallel States
+  - Hierarchical States
+  - Extended State (context)
+  - Guarded Transitions
+
+</Steps>
+
+https://xstate.js.org/docs/about/concepts.html#statecharts
 
 ---
 
 # Why State Machines?
 
+<Steps>
+
 - Encapsulation of State/Logic
 - Design/Test w/o code
-- Visualizable
-- Simulatable
+- Visualizable/Simulatable
 - Ignore or error on unexpected events in states
+
+</Steps>
 
 ---
 
 # My "A Ha!" FSM Experience
 
-Factory Automation control system
+<Steps>
 
-Just-In-Time Printed Circuit Board (PCB) assembly equipment
+  - Distributed control system for JIT Printed Circuit Board assembly lines
 
-Read barcode on PCB, adjust conveyor width, download/select control program, alert user to replenish components, release PCB, start machine, etc.
+  - Read barcode, adjust conveyor, download/select program, replenish components, start machine, etc.
 
-Single FSM with ~30 Events and ~20 States
+  - Single FSM with ~30 Events and ~20 States
 
-Entire design on paper in ~week and coded in days
+  - Entire design on paper in ~week and coded in days
 
-UNIX/C++ in 1995. Still in use!
+  - UNIX/C++ in 1995. Still in use!
 
----
-
-# XState
+</Steps>
 
 ---
 
-# FSM Modeling
-## Training a dog to sit at the door before being going outside
+# [XState](https://xstate.js.org/docs/)
 
-https://xstate.js.org/viz/?gist=318b7e82d70c1a4c12fd615d1007ecb9
+"JavaScript and TypeScript finite state machines and statecharts for the modern web."
+
+<Steps>
+
+  - Install via `yarn`, `npm` or include from CDN
+  - Create, interpret, execute FSMs/statecharts
+  - Use in Vanilla JS
+  - Integrations for React, Vue, &amp; RxJS
+  - Visualizer!
+
+</Steps>
 
 ---
 
-# Add in a Door State
+# FSM Modeling a Dog's Life
 
-<DogPlay/>
+<Image src={dogLifeFSM} size="contain" style={{width: '80vw', margin:'0'}}></Image>
+
+## [Visualize it!](https://xstate.js.org/viz/?gist=6a232ea1119dd09a2b3189c8a47e4744)
+
+##
+##
+
+---
+
+<CodeSurfer theme={ vsDark }>
+
+```jsx showNumbers title="React Component Using XState"
+import React from 'react'
+
+import { Machine } from 'xstate';
+import { useMachine } from '@xstate/react';
+
+import dogLying from '../images/dog-lying-svgrepo-com.svg'
+import dogPlaying from '../images/dog-playing-svgrepo-com.svg'
+import dogStanding from '../images/dog-svgrepo-com.svg'
+import doorClosed from '../images/closed-filled-rectangular-door-svgrepo-com.svg'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+  width: 90vw;
+  max-height: 300px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: white;
+  color: black;
+  padding: 0.5em
+`
+const Centered = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+`
+const Btn = styled.button`
+  padding: 10px;
+  margin: 2px;
+  font-size: 14px;
+  font-weight: bold;
+`
+const Img = styled.img`
+  max-height: 200px;
+`
+const Empty = styled.div`
+  width: 100px;
+`
+
+const dogLifeMachine = Machine({
+  id: 'dogLife',
+  initial: 'bored',
+  states: {
+    bored: {
+      on: {
+        LETS_PLAY: 'door'
+      }
+    },
+    door: {
+      on: {
+        OPEN: 'play',
+        CLOSE: 'bored'
+      }
+    },
+    play: {
+      on: {
+        INSIDE: 'door'
+      }
+    },
+  }
+});
+
+const DogPlay = () => {
+  const [state, send] = useMachine(dogLifeMachine)
+
+  return <>
+    <Wrapper>
+      {state.matches('bored') ? <Img src={dogLying} alt="a sleeping dog" /> : <Empty />}
+      {state.matches('door') ? <Img src={dogStanding} alt="a standing dog" /> : <Empty />}
+      <Img src={doorClosed} alt="a closed door" />
+      {state.matches('play') ? <Img src={dogPlaying} alt="a dog playing" style={{ transform: 'scaleX(-1)' }} /> : <Empty />}
+    </Wrapper>
+    <Wrapper>
+      <Centered>
+        <h3>Trainer's Actions:</h3>
+        <Btn onClick={() => send('LETS_PLAY')}>"Let's Play"</Btn>
+        <Btn onClick={() => send('OPEN')}>Door Open</Btn>
+        <Btn onClick={() => send('CLOSE')}>Door Close</Btn>
+        <Btn onClick={() => send('INSIDE')}>"Inside"</Btn>
+      </Centered>
+    </Wrapper >
+    <Wrapper>
+      <h3>
+        State: {state.value}
+      </h3>
+    </Wrapper>
+  </>
+}
+
+export default DogPlay
+```
+
+```diff 1:5 title="Add imports"
+
+```
+
+```diff 6:9 title="Import Images for UI"
+
+```
+
+```diff 10:40 title="Create Helper Styled Components"
+
+```
+
+```diff 42:63 title="Define the XState Machine"
+
+```
+
+```diff 65:90 title="Define the Component Using the Machine"
+
+```
+
+```diff 66 title="Hook to Get Machine's Current State &amp; Send it Events"
+
+```
+
+```diff 70:73 title="Use Machine's current state to update display"
+
+```
+
+```diff 78:81 title="Send Events to the Machine to update the current state"
+
+```
+
+```diff 86 title="Access the current state as a value"
+
+```
+
+</CodeSurfer>
+
+---
+
+# React Component In action
+
+<DogLife/>
+
+---
+
+# Enhance Our Component
+## Train a dog to sit at the door until released outside
+
+  - Use "Extended State" aka "context" to model door open/closed
+  - Use Guards to control Transitions to states
 
 https://xstate.js.org/viz/?gist=2ad7eeda381f43a4139c01df82d2a9ad
 
 ---
 
-# Enhance Our Dog Model
+# What We Are Building
 
-
----
-
-# Multiple Dogs
-
+<DogTraining />
 
 ---
 
-Traffic Light
-https://xstate.js.org/viz/?gist=12be236f588172dee0282e48ff02e0b3
+<CodeSurfer theme={ vsDark }>
 
-DogLife Machine
+```jsx showNumbers title="Updated React Component"
+const DogPlay = () => {
+  const [state, send] = useMachine(dogTraining)
+
+  return <>
+    <Wrapper>
+      {state.matches('sleeping') ? <Img src={dogLying} alt="a sleeping dog" /> : <Empty />}
+      {state.matches('standing') ? <Img src={dogStanding} alt="a standing dog" /> : <Empty />}
+      {state.matches('sitting') ? <Img src={dogSitting} alt="a sitting dog" /> : null}
+      {state.context.doorOpen ? <Img src={doorOpen} alt="an open door" /> : <Img src={doorClosed} alt="a closed door" />}
+      {state.matches('outside') ? <Img src={dogPlaying} alt="a dog playing" style={{ transform: 'scaleX(-1)' }} /> : <Empty />}
+    </Wrapper>
+    <Wrapper>
+      <h3>Dog's Actions:</h3>
+      <Centered>
+        <Btn onClick={() => send('SIT')}>Sit</Btn>
+        <Btn onClick={() => send('STAND')}>Stand</Btn>
+      </Centered>
+      <h3>Trainer's Actions:</h3>
+      <Centered>
+        <Btn onClick={() => send('LETS_PLAY')}>"Let's Play"</Btn>
+        <Btn onClick={() => send('FREE')}>"Free"</Btn>
+        <Btn onClick={() => send('DOOR_OPEN')}>Door Open</Btn>
+        <Btn onClick={() => send('DOOR_CLOSE')}>Door Close</Btn>
+      </Centered>
+    </Wrapper >
+    <Wrapper>
+      <h3>
+        State: {state.value}
+      </h3>
+      <h3><Btn onClick={() => send('RESET')}> Reset</Btn></h3>
+      <h3>
+        Door: {state.context.doorOpen ? 'OPEN' : 'CLOSED'}
+      </h3>
+    </Wrapper>
+  </>
+}
+```
+
+```diff 2 title="Use New State Machine"
+
+```
+
+```diff 9 title="Use Extended State/Context to display Door State"
+
+```
+
+```diff 13:24 title="Send New Events"
+
+```
+
+</CodeSurfer>
+
+---
+
+# Let's Try It Out
+
+<DogTraining />
+
+---
+
+# Final Thoughts
+
+<Steps>
+
+- Redux/Vuex/Flow state management?
+- State Machines can be reused
+- Pass Actions into State Machine as callbacks
+- This only scratches the surface!
+
+</Steps>
 
 ---
 
 # Resources
 
+## Web articles
+
+- https://timdeschryver.dev/blog/my-love-letter-to-xstate-and-statecharts
 - https://jonbellah.com/articles/xstate-react-hooks/
+- https://www.smashingmagazine.com/2018/01/rise-state-machines/
+- https://css-tricks.com/using-react-and-xstate-to-build-a-sign-in-form/
+- https://css-tricks.com/robust-react-user-interfaces-with-finite-state-machines/
 
+## Egghead Videos:
 
+- https://egghead.io/courses/introduction-to-state-machines-using-xstate
+- https://egghead.io/courses/construct-sturdy-uis-with-xstate
+
+---
+
+# Thanks!
+
+## Me
+
+- @steveaschwarz
+
+## Presentation
+
+- https://github.com/saschwarz/xstate-lightning
+- https://xstate-intro.netlify.com/#1
+
+## Slides Built Using:
+
+- https://github.com/jxnblk/mdx-deck
+- https://github.com/pomber/code-surfer
+
+---

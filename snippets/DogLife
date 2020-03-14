@@ -1,0 +1,54 @@
+
+const dogLifeMachine = Machine({
+  id: 'dogLife',
+  initial: 'bored',
+  context: {
+  },
+  states: {
+    bored: {
+      on: {
+        LETS_PLAY: 'door'
+      }
+    },
+    door: {
+      on: {
+        OPEN: 'play',
+        CLOSE: 'bored'
+      }
+    },
+    play: {
+      on: {
+        INSIDE: 'door'
+      }
+    },
+  }
+});
+
+const DogPlay = () => {
+  const [state, send] = useMachine(dogLifeMachine)
+
+  return <>
+    <Wrapper>
+      {state.matches('bored') ? <Img src={dogLying} alt="a sleeping dog" /> : <div style={{ width: "100px" }} />}
+      {state.matches('door') ? <Img src={dogStanding} alt="a standing dog" /> : <div style={{ width: "100px" }} />}
+      <Img src={doorClosed} alt="a closed door" />
+      {state.matches('play') ? <Img src={dogPlaying} alt="a dog playing" style={{ transform: 'scaleX(-1)' }} /> : <div style={{ width: "100px" }} />}
+    </Wrapper>
+    <Wrapper>
+      <Centered>
+        <h3>Trainer's Actions:</h3>
+        <Btn onClick={() => send('LETS_PLAY')}>"Let's Play"</Btn>
+        <Btn onClick={() => send('OPEN')}>Door Open</Btn>
+        <Btn onClick={() => send('CLOSE')}>Door Close</Btn>
+        <Btn onClick={() => send('INSIDE')}>"Inside"</Btn>
+      </Centered>
+    </Wrapper >
+    <Wrapper>
+      <h3>
+        State: {state.value}
+      </h3>
+    </Wrapper>
+  </>
+}
+
+export default DogPlay
